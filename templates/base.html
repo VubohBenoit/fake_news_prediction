@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FakeNews Detector – TESE935</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <h1>🔍 FakeNews Detector</h1>
+        <p class="subtitle">TESE935 – Gaël Roustan, Argonaultes 2026</p>
+        <nav>
+            <a href="{{ url_for('index') }}">📰 Toutes les news</a>
+            <a href="{{ url_for('add_news') }}">➕ Ajouter une news</a>
+            <a href="{{ url_for('status') }}" target="_blank">📊 Status API</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for cat, msg in messages %}
+                <div class="alert alert-{{ cat }}">{{ msg }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    <p>Argonaultes – RCS PARIS 978 665 909 – TESE935 &copy; 2026</p>
+</footer>
+
+</body>
+</html>

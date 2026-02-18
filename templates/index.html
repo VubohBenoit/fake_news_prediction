@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="hero">
+    <div class="hero-text">
+        <h2>Liste des news enregistrées</h2>
+        <p>
+            Statut du modèle ML :
+            {% if model_ready %}
+                <span class="badge badge-ok">✅ Modèle prêt</span>
+            {% else %}
+                <span class="badge badge-warn">⏳ Entraînement en cours…</span>
+            {% endif %}
+        </p>
+    </div>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+        {% if model_ready %}
+        <a href="{{ url_for('predict_all') }}" class="btn btn-predict">🤖 Tout prédire</a>
+        {% endif %}
+        <a href="{{ url_for('add_news') }}" class="btn btn-primary">➕ Ajouter une news</a>
+    </div>
+</section>
+
+{% if news_list %}
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Titre</th>
+                <th>Source</th>
+                <th>Label humain</th>
+                <th>Prédiction ML</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for news in news_list %}
+            <tr>
+                <td>{{ news['id'] }}</td>
+                <td class="news-title">{{ news['title'] }}</td>
+                <td>
+                    {% if news['source'] %}
+                        <a href="{{ news['source'] }}" target="_blank" rel="noopener">🔗 lien</a>
+                    {% else %}
+                        <em>—</em>
+                    {% endif %}
+                </td>
+                <td>
+                    <span class="badge badge-{{ 'ok' if news['label'] == 'real' else 'danger' }}">
+                        {{ '✅ Vérifiée' if news['label'] == 'real' else '❌ Fausse' }}
+                    </span>
+                </td>
+                <td>
+                    {% if news['predicted'] %}
+                        <span class="badge badge-{{ 'ok' if news['predicted'] == 'real' else 'danger' }}">
+                            {{ '✅ real' if news['predicted'] == 'real' else '❌ fake' }}
+                        </span>
+                    {% else %}
+                        <em>—</em>
+                    {% endif %}
+                </td>
+                <td>{{ news['created'][:10] }}</td>
+                <td>
+                    {% if model_ready %}
+                        <a href="{{ url_for('predict_single', news_id=news['id']) }}" class="btn btn-sm">Prédire</a>
+                    {% else %}
+                        <span class="muted">N/A</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="empty">Aucune news enregistrée pour l'instant.</p>
+{% endif %}
+
+{% endblock %}
