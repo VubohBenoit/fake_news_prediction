@@ -1,7 +1,8 @@
 # FakeNews Detector – TESE935
 
 > Projet d'évaluation — Réalisation et analyse de tests  
-> Gaël Roustan, Argonaultes 2026
+> Supervise par Gaël Roustan, Argonaultes 2026
+> Realise par Benoit Vuboh
 
 ---
 
